@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os, sys
+import datetime
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -143,3 +144,7 @@ CORS_ORIGIN_WHITELIST = (
     'v1.dev.local', 
     'http://v1.dev.local', 
 )
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA':datetime.timedelta(hours=1)
+}
