@@ -29,13 +29,19 @@ class ReportsSerializer(serializers.ModelSerializer):
 	qty_inkjet_2 = serializers.IntegerField()
 	qty_laser_1 = serializers.IntegerField()
 	qty_laser_2 = serializers.IntegerField()
+	
+	inkjet_ratio = serializers.ReadOnlyField()
+	laser_ratio = serializers.ReadOnlyField()
+	total_inkjet = serializers.ReadOnlyField(source='get_inkjet_qty')
+	total_laser = serializers.ReadOnlyField(source='get_laser_qty')
+	total = serializers.ReadOnlyField(source='get_total')
 
 	class Meta:
 		model = Reports
 		#fields = ('store', 'date', 'qty_inkjet_1', 'qty_inkjet_2', 'inkjet_ratio', 
 		#	'qty_laser_1', 'qty_laser_2', 'laser_ratio', 'comment', 'workers', 'created_by',)		
 		#depth = 2
-		read_only_fields = ('id', 'created_by', 'api_url')
+		read_only_fields = ('id', 'created_by')
 
 
 	def get_api_url(self, obj):

@@ -59,7 +59,7 @@ class Reports(models.Model):
 		return int(self.qty_laser_1 + self.qty_laser_2)
 
 	def get_total(self):
-		return int(self.get_inkjet_qty + self.get_laser_qty)
+		return int(self.get_inkjet_qty() + self.get_laser_qty())
 
 	def add_comment(self, content):
 		pass
