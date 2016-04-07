@@ -11,7 +11,7 @@ class WorkplacesSerializer(serializers.HyperlinkedModelSerializer):
 class WorkerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Workers
-		fields = ('name',)
+		fields = ('name','id')
 
 class WorkersSerializer(serializers.ModelSerializer):
 	#workplace = WorkplacesSerializer(many=False, write_only=False)
@@ -20,7 +20,7 @@ class WorkersSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = models.Workers
-		fields = ('name', 'workplace', 'work')
+		fields = ('id','name', 'workplace', 'work')
 
 	def create(self, validated_data):
 		print(validated_data)
