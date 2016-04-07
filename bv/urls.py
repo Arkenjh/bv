@@ -13,5 +13,6 @@ urlpatterns = [
     #url(r'^api/', include('api.urls')),
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')), 
     url(r'^rest-auth/', include('rest_auth.urls')), 
-    url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token')
+    url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'), 
+    url(r'^api-token-refresh/', 'rest_framework_jwt.views.refresh_jwt_token'),
 ]
