@@ -9,11 +9,11 @@ from datetime import datetime
 class StoresSerializer(serializers.HyperlinkedModelSerializer):
 	workers = serializers.MultipleChoiceField(WORKERS_CHOICES, write_only=True)
 	#work = serializers.ReadOnlyField(source='workers.name',)
-	work = WorkerSerializer(source='workers', many=True, read_only=True)
+	workers_list = WorkerSerializer(source='workers', many=True, read_only=True)
 
 	class Meta:
 		model = models.Stores
-		fields = ('name', 'workers', 'work')
+		fields = ('name', 'workers', 'workers_list')
 
 class GroupStoresSerializer(serializers.HyperlinkedModelSerializer):
 	stores = serializers.MultipleChoiceField(models.STORES_CHOICES, write_only=True)

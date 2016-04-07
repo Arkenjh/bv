@@ -5,6 +5,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from workers.models import Workers
 
+class StoresManager(models.Manager):
+
+	def by_user(self, user):
+		return super(StoresManager, self).get_queryset().filter(id=user.profile.store.id)
 
 class GroupStores(models.Model):
 	name = models.CharField("nom", max_length=30,unique=True)
@@ -22,6 +26,8 @@ class Stores(models.Model):
 	def __str__(self):
 		return self.name
 		#return ("%s" % self.name).encode('ascii', errors='replace')
+
+	objects = StoresManager()
 
 class UserStore(models.Model):
 	user = models.OneToOneField(User)
