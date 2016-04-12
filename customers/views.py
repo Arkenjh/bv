@@ -7,6 +7,8 @@ from customers.models import Customers
 
 
 class CustomersViewSet(viewsets.ModelViewSet):
-	queryset = Customers.objects.all()
 	serializer_class = CustomersSerializer
+
+	def get_queryset(self):
+		return Customers.objects.by_store(user=self.request.user)
 	

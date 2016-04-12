@@ -17,6 +17,7 @@ class CustomersSerializer(serializers.ModelSerializer):
 	#store = serializers.ReadOnlyField(required=False)
 	#full_name = serializers.CharField()
 	#stores = serializers.ChoiceField(STORES_CHOICES, write_only=True)
+	fullname = serializers.ReadOnlyField(source='_get_full_name')
 
 	class Meta:
 		model = Customers

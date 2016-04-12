@@ -5,6 +5,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from stores.models import Stores
 
+class CustomersManager(models.Manager):
+
+	def by_store(self, user):
+		return super(CustomersManager, self).get_queryset().filter(id=user.profile.store.id)
 
 class Customers(models.Model):
 
@@ -40,6 +44,8 @@ class Customers(models.Model):
 		if not self.pk:
 			print("### override save method here ###")
 		super(Customers,self).save(*args,**kwargs)
+
+	objects = CustomersManager()
 
 	#class Meta:
 	#	unique_together = ('lastname', 'corporate_name', 'store')
