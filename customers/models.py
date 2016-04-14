@@ -8,7 +8,7 @@ from stores.models import Stores
 class CustomersManager(models.Manager):
 
 	def by_store(self, user):
-		return super(CustomersManager, self).get_queryset().filter(id=user.profile.store.id)
+		return super(CustomersManager, self).get_queryset().filter(store=user.profile.store.id)
 
 class Customers(models.Model):
 
@@ -18,12 +18,12 @@ class Customers(models.Model):
 	professional = models.BooleanField("professionnel", null=False, default=False)
 
 	email = models.EmailField("email", blank=True)
-	phone_1 = models.CharField("téléphone #1", max_length=10,default="")
-	phone_2 = models.CharField("téléphone #2", max_length=10,default="")
-	address = models.CharField("adresse", max_length=60,default="")
-	zipcode = models.CharField("code postal", max_length=6,default="")
-	town = models.CharField("ville", max_length=20,default="")
-	country = models.CharField("pays", max_length=20,default="")
+	phone_1 = models.CharField("téléphone #1", max_length=10,default="",blank=True)
+	phone_2 = models.CharField("téléphone #2", max_length=10,default="",blank=True)
+	address = models.CharField("adresse", max_length=60,default="",blank=True)
+	zipcode = models.CharField("code postal", max_length=6,default="",blank=True)
+	town = models.CharField("ville", max_length=20,default="",blank=True)
+	country = models.CharField("pays", max_length=20,default="",blank=True)
 
 	store = models.ForeignKey(Stores, default=1, null=False, verbose_name="magasin")
 	added = models.DateTimeField(auto_now_add=True)
