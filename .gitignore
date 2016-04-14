@@ -11,4 +11,5 @@ lib
 lib64
 *.pyo
 *.pyc
-
+*/migrations/*.py
+*/__pycache__
