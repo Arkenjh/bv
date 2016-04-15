@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'rest_auth', 
     'corsheaders',
+    #'mailer', 
+    'mailqueue', 
     #'django_filters',
     'workers', 
     'stores', 
@@ -138,6 +140,7 @@ TEMPLATES = [
     },
 ]
 
+# CORS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
@@ -148,3 +151,26 @@ CORS_ORIGIN_WHITELIST = (
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA':datetime.timedelta(hours=1)
 }
+
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Paris'
+
+# MAILER
+#  EMAIL_BACKEND = "mailer.backend.DbBackend"
+#EMAIL_BACKEND = "django_mailer.smtp_queue.EmailBackend"
+#DEFAULT_FROM_EMAIL = "contact@ad-min.pro"
+#MAILQUEUE_CELERY = True
+#MAILQUEUE_STORAGE = True
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.gandi.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'do-not-reply@ad-min.pro'
+EMAIL_HOST_PASSWORD = '56973001Roy'
+DEFAULT_FROM_EMAIL = 'do-not-reply@ad-min.pro'
+DEFAULT_TO_EMAIL = 'contact@ad-min.pro'

@@ -8,6 +8,7 @@ from stores.models import Stores, STORES_CHOICES
 from customers.models import Customers
 from api import utils
 
+from customers.tasks import add
 
 class CustomersSerializer(serializers.ModelSerializer):
 
@@ -38,6 +39,8 @@ class CustomersSerializer(serializers.ModelSerializer):
 	def validate(self, attrs):
 		print("### validate here ###")
 		print(attrs)
+
+		add.delay(len(attrs), len(attrs))
 		#profile = self.context['request'].user.profile
 
 		#results = utils.getProfile(self.context)

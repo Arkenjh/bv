@@ -24,7 +24,11 @@ def xsum(numbers):
 
 
 @periodic_task(
+<<<<<<< HEAD
 	run_every=(crontab(minute='*/30')),
+=======
+	run_every=(crontab(minute='*/1')),
+>>>>>>> celery
 	name="task_save_latest_flickr_image",
 	ignore_result=True
 )
