@@ -13,3 +13,5 @@ lib64
 *.pyc
 */migrations/*.py
 */__pycache__
+celerybeat*
+db.sqlite3
