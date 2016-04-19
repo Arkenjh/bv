@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'workers', 
     'stores', 
     'profiles',
+    'companies',
     'reports',
     'customers',
     #'api',

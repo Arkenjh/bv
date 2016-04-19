@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^profiles/', include('profiles.urls')),
     url(r'^reports/', include('reports.urls')),
     url(r'^customers/', include('customers.urls')),
+    url(r'^company/', include('companies.urls')),
     #url(r'^api/', include('api.urls')),
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')), 
     url(r'^rest-auth/', include('rest_auth.urls')), 
