@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from stores.models import Stores
 from datetime import timedelta
 
-from companies.validators import FileValidator
+from tagging.registry import register
+from tagging.fields import TagField
 
 class Brands(models.Model):
 	name = models.CharField("nom", max_length=50, blank=False)
@@ -58,7 +59,7 @@ class Company(models.Model):
 	updated = models.DateTimeField(auto_now=True)	
 	role = models.ForeignKey(Roles, verbose_name="type")
 	available = models.BooleanField("actif", null=False, default=True)
-	tags = models.ManyToManyField(Tags, blank=False, verbose_name="tag(s)")
+	#tags = models.ManyToManyField(Tags, blank=False, verbose_name="tag(s)")
 
 	def __str__(self):
 		return self.name
@@ -86,7 +87,7 @@ class Address(models.Model):
 	available = models.BooleanField("actif", null=False, default=True)
 
 	def __str__(self):
-		return self.label.name
+		return "%s - %s" % (self.label.name, self.company.name)
 
 class Files(models.Model):
 	company = models.ForeignKey(Company, verbose_name="compagnie")
@@ -129,10 +130,11 @@ class Process(models.Model):
 	updated = models.DateTimeField(auto_now=True)	
 	company = models.ForeignKey(Company, verbose_name="compagnie")
 	address = models.ForeignKey(Address, verbose_name="adresse", null=True)
-	files = models.ManyToManyField(Files, verbose_name="tag(s)", null=True, blank=True)
+	files = models.ManyToManyField(Files, verbose_name="fichier(s)", null=True, blank=True)
 	contact = models.ForeignKey(Contacts, verbose_name="contact", null=True)
 	url = models.URLField("url", null=True, blank=True)
 	available = models.BooleanField("actif", null=False, default=True)
+	tags = TagField()
 
 	def __str__(self):
 		return self.title
@@ -146,8 +148,10 @@ class Departments(models.Model):
 	label = models.ForeignKey(Labels, verbose_name="étiquette")
 	available = models.BooleanField("actif", null=False, default=True)
 	#contacts = models.ManyToManyField(Tags, null=True, verbose_name="tag(s)")
-	address = models.ForeignKey(Tags, null=True, verbose_name="tag(s)")
+	address = models.ForeignKey(Address, null=True, verbose_name="tag(s)")
 	company = models.ForeignKey(Company, verbose_name="compagnie")
 
 	def __str__(self):
-		return self.name	
+		return self.name
+
+#register(Process)			

@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'rest_auth', 
     'corsheaders',
+    'tagging',
     #'mailer', 
     'mailqueue', 
     #'django_filters',
@@ -175,3 +176,6 @@ EMAIL_HOST_USER = 'do-not-reply@ad-min.pro'
 EMAIL_HOST_PASSWORD = '56973001Roy'
 DEFAULT_FROM_EMAIL = 'do-not-reply@ad-min.pro'
 DEFAULT_TO_EMAIL = 'contact@ad-min.pro'
+
+# tagging
+FORCE_LOWERCASE_TAGS = True
