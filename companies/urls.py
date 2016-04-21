@@ -13,4 +13,5 @@ router.register(r'contacts', views.ContactsViewSet, base_name='api_contacts')
 router.register(r'process', views.ProcessViewSet, base_name='api_process')
 router.register(r'files', views.FilesViewSet, base_name='api_files')
 router.register(r'address', views.AddressViewSet, base_name='api_address')
+router.register(r'department', views.DepartmentViewSet, base_name='api_department')
 urlpatterns = router.urls

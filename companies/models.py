@@ -9,6 +9,8 @@ from datetime import timedelta
 from tagging.registry import register
 from tagging.fields import TagField
 
+from locales.models import FrenchDepartments, Countries
+
 class Brands(models.Model):
 	name = models.CharField("nom", max_length=50, blank=False)
 	available = models.BooleanField("actif", null=False, default=True)
@@ -27,13 +29,6 @@ TAGS_CHOICES = [(tag.id, tag.name) for tag in Tags.objects.filter(available=True
 
 class Sectors(models.Model):
 	county = models.CharField("departement / région", max_length=50, blank=False)
-
-class Country(models.Model):
-	name = models.CharField("pays", max_length=30)
-	short = models.CharField("nom court", max_length=30, blank=False)
-
-	def __str__(self):
-		return self.name
 
 class Roles(models.Model):
 	name = models.CharField("nom", max_length=50)
@@ -69,6 +64,7 @@ class Persons(models.Model):
 	email = models.EmailField("email", default="", blank=True)
 	phone_1 = models.CharField("téléphone #1", max_length=20, default="", blank=True)
 	phone_2 = models.CharField("téléphone #2", max_length=20, default="", blank=True)
+	ext_number = models.CharField("n°poste", max_length=20, default="", blank=True)
 	available = models.BooleanField("actif", null=False, default=True)
 
 	def __str__(self):
@@ -80,7 +76,7 @@ class Address(models.Model):
 	address_2 = models.CharField("adresse (complement)", max_length=100, default="", blank=True)
 	zipcode = models.CharField("code postal", max_length=10, default="")
 	town = models.CharField("ville", max_length=50, default="")
-	country = models.ForeignKey(Country, verbose_name="pays")
+	country = models.ForeignKey(Countries, verbose_name="pays")
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)	
 	company = models.ForeignKey(Company, verbose_name="compagnie")
@@ -112,7 +108,8 @@ class Files(models.Model):
 
 class Contacts(models.Model):
 	company = models.ForeignKey(Company, verbose_name="compagnie")
-	person = models.ForeignKey(Persons, verbose_name="contact") 
+	person = models.ForeignKey(Persons, verbose_name="contact")
+	sector = models.ManyToManyField(FrenchDepartments, verbose_name="secteur", blank=True) 
 	label = models.ForeignKey(Labels, verbose_name="étiquette")
 	created_on = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)	
@@ -130,7 +127,7 @@ class Process(models.Model):
 	updated = models.DateTimeField(auto_now=True)	
 	company = models.ForeignKey(Company, verbose_name="compagnie")
 	address = models.ForeignKey(Address, verbose_name="adresse", null=True)
-	files = models.ManyToManyField(Files, verbose_name="fichier(s)", null=True, blank=True)
+	files = models.ManyToManyField(Files, verbose_name="fichier(s)", blank=True)
 	contact = models.ForeignKey(Contacts, verbose_name="contact", null=True)
 	url = models.URLField("url", null=True, blank=True)
 	available = models.BooleanField("actif", null=False, default=True)
@@ -148,7 +145,7 @@ class Departments(models.Model):
 	label = models.ForeignKey(Labels, verbose_name="étiquette")
 	available = models.BooleanField("actif", null=False, default=True)
 	#contacts = models.ManyToManyField(Tags, null=True, verbose_name="tag(s)")
-	address = models.ForeignKey(Address, null=True, verbose_name="tag(s)")
+	address = models.ForeignKey(Address, null=True, verbose_name="adresse")
 	company = models.ForeignKey(Company, verbose_name="compagnie")
 
 	def __str__(self):

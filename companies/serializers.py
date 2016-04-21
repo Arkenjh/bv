@@ -6,6 +6,9 @@ from datetime import datetime
 from companies import models
 from companies.validators import FileValidator
 
+from locales.serializers import FrenchDepartmentsSerializer
+from locales.models import FRENCH_DEPARTMENTS, Countries
+
 class TagsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Tags
@@ -28,8 +31,8 @@ class LabelsSerializer(serializers.ModelSerializer):
 
 class CountrySerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.Country
-		fields = ('name','short',)
+		model = Countries
+		fields = ('name_fr_fr','alpha2',)
 
 class CompanySerializer(serializers.ModelSerializer):
 
@@ -46,7 +49,7 @@ class PersonsSerializer(serializers.ModelSerializer):
 		read_only_fields = ('created_on','updated',)	
 
 class ContactsSerializer(serializers.ModelSerializer):
-
+	#sector = serializers.MultipleChoiceField(FRENCH_DEPARTMENTS, write_only=True)
 	person = PersonsSerializer()
 
 	class Meta:
@@ -72,7 +75,7 @@ class FilesSerializer(serializers.ModelSerializer):
 		read_only_fields = ('created_on','updated','name','content_type','size')
 
 	def validate(self, data):
-		print("### validate ###")
+		###  HACK  ### ajout du content type à la validation du post, pas terrible
 		request = self.context.get("request")
 		if request and hasattr(request, "FILES"):
 			f = request.FILES.getlist('content')[0]
@@ -86,4 +89,10 @@ class AddressSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = models.Address
-		read_only_fields = ('created_on','updated',)			
+		read_only_fields = ('created_on','updated',)
+
+class DepartmentSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = models.Departments
+		read_only_fields = ('created_on','updated',)		

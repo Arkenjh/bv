@@ -5,6 +5,8 @@ from rest_framework import viewsets
 from companies import serializers as se
 from companies import models as mo
 
+from locales.models import Countries
+
 
 class TagsViewSet(viewsets.ModelViewSet):
 	serializer_class = se.TagsSerializer
@@ -34,7 +36,7 @@ class CountryViewSet(viewsets.ModelViewSet):
 	serializer_class = se.CountrySerializer
 
 	def get_queryset(self):
-		return mo.Country.objects.all()
+		return Countries.objects.all()
 
 class CompanyViewSet(viewsets.ModelViewSet):
 	serializer_class = se.CompanySerializer
@@ -69,3 +71,9 @@ class AddressViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self):
 		return mo.Address.objects.all()
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+	serializer_class = se.DepartmentSerializer
+
+	def get_queryset(self):
+		return mo.Departments.objects.all()		
