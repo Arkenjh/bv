@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'companies',
     'reports',
     'customers',
+    'locales',
     #'api',
 )
 
