@@ -36,7 +36,7 @@ class CountrySerializer(serializers.ModelSerializer):
 
 class CompanySerializer(serializers.ModelSerializer):
 
-	tags = serializers.MultipleChoiceField(models.TAGS_CHOICES, write_only=True)
+	#tags = serializers.MultipleChoiceField(models.TAGS_CHOICES, write_only=True)
 
 	class Meta:
 		model = models.Company
@@ -95,4 +95,11 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = models.Departments
-		read_only_fields = ('created_on','updated',)		
+		read_only_fields = ('created_on','updated',)
+
+from tagging.models import Tag
+
+class TagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Tag
+		fields = ('id', 'name')		

@@ -7,6 +7,7 @@ from companies import models as mo
 
 from locales.models import Countries
 
+from tagging.models import Tag
 
 class TagsViewSet(viewsets.ModelViewSet):
 	serializer_class = se.TagsSerializer
@@ -77,3 +78,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self):
 		return mo.Departments.objects.all()		
+
+class TagViewSet(viewsets.ModelViewSet):
+	queryset = Tag.objects.all()
+	serializer_class = se.TagSerializer		

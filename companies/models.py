@@ -55,6 +55,7 @@ class Company(models.Model):
 	role = models.ForeignKey(Roles, verbose_name="type")
 	available = models.BooleanField("actif", null=False, default=True)
 	#tags = models.ManyToManyField(Tags, blank=False, verbose_name="tag(s)")
+	tags = TagField()
 
 	def __str__(self):
 		return self.name
