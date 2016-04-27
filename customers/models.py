@@ -37,7 +37,8 @@ class Customers(models.Model):
 	full_name = property(_get_full_name)
 
 	def __str__(self):
-		return str(self.id)
+		return ("%s" % self.full_name)
+		#return str(self.id)
 		#return ("%s" % self.firstname).encode('ascii', errors='replace')
 
 	def save(self,*args,**kwargs):

@@ -60,6 +60,8 @@ class Company(models.Model):
 	def __str__(self):
 		return self.name
 
+SUPPLIERS_CHOICES = [(company.id, company.name) for company in Company.objects.filter(available=True)]
+
 class Persons(models.Model):
 	name = models.CharField("nom", max_length=50)
 	email = models.EmailField("email", default="", blank=True)
