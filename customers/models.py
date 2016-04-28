@@ -25,6 +25,9 @@ class Customers(models.Model):
 	town = models.CharField("ville", max_length=20,default="",blank=True)
 	country = models.CharField("pays", max_length=20,default="",blank=True)
 
+	send_sms = models.BooleanField("envoie de sms", null=False, default=True)
+	send_email = models.BooleanField("envoie de mail", null=False, default=True)
+
 	store = models.ForeignKey(Stores, default=1, null=False, verbose_name="magasin")
 	added = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -61,3 +64,6 @@ class Customers(models.Model):
 #			return # Yoko shall never have her own blog!
 #		else:
 #			super(Blog, self).save(*args, **kwargs) # Call the "real" save() method.
+
+class Purchase(models.Model):
+	customer = models.ForeignKey(Customers, null=False, blank=False, verbose_name="client")
