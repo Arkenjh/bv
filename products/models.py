@@ -2,6 +2,36 @@ from django.db import models
 from tagging.fields import TagField
 from tagging.models import Tag
 
+
+class Division(models.Model):
+	name = models.CharField("nom", max_length=50, blank=False, unique=True)
+	available = models.BooleanField("actif", null=False, default=True)
+
+	def __str__(self):
+		return self.name
+
+class Category(models.Model):
+	name = models.CharField("nom", max_length=50, blank=False, unique=True)
+	division = models.ForeignKey(Division, verbose_name="division")
+	available = models.BooleanField("actif", null=False, default=True)
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		verbose_name_plural = "categories"	
+
+class SubCategory(models.Model):
+	name = models.CharField("nom", max_length=50, blank=False, unique=True)
+	category = models.ForeignKey(Category, verbose_name="catégorie")
+	available = models.BooleanField("actif", null=False, default=True)
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		verbose_name_plural = "sub categories"			
+
 class Brand(models.Model):
 	name = models.CharField("nom", max_length=50, blank=False, unique=True)
 	tags = TagField()
@@ -19,6 +49,15 @@ class Products(models.Model):
 
 	def __str__(self):
 		return "%s - %s" % (self.reference, self.name)
+
+	class Meta:
+		verbose_name = "product"
+		verbose_name_plural = "products"			
+
+
+
+
+
 
 import csv
 import io
