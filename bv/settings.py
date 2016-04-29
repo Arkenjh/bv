@@ -14,7 +14,7 @@ import datetime
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'bvdrome', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'bv', 'static')
 STATIC_URL = '/static/'
 PUBLIC_ROOT = os.path.join(BASE_DIR, 'public')
 #print(sys.path)
