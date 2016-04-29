@@ -35,7 +35,7 @@ class Warranty(models.Model):
 class Problem(models.Model):
 	content = models.TextField("problème", default="")
 	tags = TagField()
-	
+
 	def __str__(self):
 		return self.content
 
@@ -69,7 +69,7 @@ class TicketManager(models.Manager):
 
 	def by_store(self, user):
 		return super(TicketManager, self).get_queryset().filter(store=user.profile.store.id)
-
+"""
 	def create(self, **kwargs):
 		with transaction.atomic():
 
@@ -85,9 +85,10 @@ class TicketManager(models.Manager):
 			ticket.save(force_insert=True)
 			
 		return ticket
+"""
 
 class Ticket(models.Model):
-	reference = models.IntegerField("référence", default=100)
+	reference = models.IntegerField("référence", default="")
 	products = models.ManyToManyField(Product, verbose_name="produit(s)", blank=True)
 	store = models.ForeignKey(Stores, verbose_name="magasin", null=False, blank=False)
 	customer = models.ForeignKey(Customers, null=True, blank=True, verbose_name="client")
@@ -104,10 +105,11 @@ class Ticket(models.Model):
 		return "%s | ticket #%s" % (self.store.name, self.reference)
 
 	def save(self, *args, **kwargs):
-		store_settings = Settings.objects.get(store=self.store.id)
-		store_settings.current += 1
-		self.reference = store_settings.current
-		store_settings.save()
+		if self.reference == "":
+			store_settings = Settings.objects.get(store=self.store.id)
+			store_settings.current += 1
+			self.reference = store_settings.current
+			store_settings.save()
 
 		super(Ticket, self).save(*args, **kwargs)
 

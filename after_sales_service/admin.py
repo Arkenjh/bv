@@ -6,8 +6,12 @@ from after_sales_service.models import *
 class ProductAdmin(admin.ModelAdmin):
 	raw_id_fields = ("product",)
 
+class TicketAdmin(admin.ModelAdmin)	:
+	exclude=("reference ",)
+	readonly_fields=('reference',)	
+
 # Register your models here.
-admin.site.register(Ticket)
+admin.site.register(Ticket, TicketAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Problem)
 admin.site.register(Warranty)	
