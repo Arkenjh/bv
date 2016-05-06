@@ -7,6 +7,9 @@ from stores.models import Stores
 
 class CustomersManager(models.Manager):
 
+	def choices(self, user):
+		return [(customer.id, customer.full_name) for customer in Customers.objects.filter(store=user.profile.store.id)]		
+
 	def by_store(self, user):
 		return super(CustomersManager, self).get_queryset().filter(store=user.profile.store.id)
 

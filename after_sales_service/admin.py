@@ -18,3 +18,8 @@ admin.site.register(Warranty)
 admin.site.register(Files)
 admin.site.register(Comment)
 admin.site.register(Settings)
+admin.site.register(EquipmentLoan)
+admin.site.register(LoanHistory)
+admin.site.register(SharedData)
+
+admin.site.register(CustomerHistory)

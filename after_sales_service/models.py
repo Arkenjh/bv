@@ -9,6 +9,43 @@ from datetime import timedelta
 from django.db import transaction
 from tagging.fields import TagField
 
+
+
+class EquipmentLoanManager(models.Manager):
+
+	def choices(self, user):
+		return [(equipment.id, equipment.description) for equipment in EquipmentLoan.objects.filter(store=user.profile.store.id, available=True)]		
+
+	def from_store(self, user):
+		return super(EquipmentLoanManager, self).get_queryset().filter(store=user.profile.store.id)
+
+class EquipmentLoan(models.Model):
+	store = models.ForeignKey(Stores, verbose_name="magasin", null=False, blank=False)
+	description = models.CharField("description", max_length=200, blank=False, null=False)
+	available = models.BooleanField("actif", null=False, blank=False, default=True)
+
+	def __str__(self):
+		return "%s" % (self.description)
+
+	objects = EquipmentLoanManager()
+
+class LoanHistoryManager(models.Manager):
+
+	def from_store(self, user):
+		return super(LoanHistoryManager, self).get_queryset().filter(store=user.profile.store.id)
+
+class LoanHistory(models.Model):
+	store = models.ForeignKey(Stores, verbose_name="magasin", null=False, blank=False)
+	equipment = models.ForeignKey(EquipmentLoan, verbose_name="matériel", null=False, blank=False)
+	customer = models.ForeignKey(Customers, null=True, blank=True, verbose_name="client")
+	start = models.DateField("prêté le", blank=False, null=False)
+	end = models.DateField("rendu le", null=True, blank=True)
+	closed = models.BooleanField("terminé", null=False, blank=False, default=False)
+
+	created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="utilisateur")
+
+	objects = LoanHistoryManager()
+
 class Settings(models.Model):
 	store = models.OneToOneField(Stores, verbose_name="magasin", null=False, blank=False)
 	prefix = models.CharField("préfixe", max_length=3, blank=False, null=False)
@@ -98,6 +135,7 @@ class Ticket(models.Model):
 	updated = models.DateTimeField("modifié le", auto_now=True)
 	last_activity = models.DateTimeField("dernière activité")
 	created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="utilisateur")
+	#files = models.ForeignKey(Files, verbose_name="fichier(s)")
 
 	objects = TicketManager()
 
@@ -113,8 +151,17 @@ class Ticket(models.Model):
 
 		super(Ticket, self).save(*args, **kwargs)
 
+class FilesManager(models.Manager):
+
+	def from_ticket(self, ticket):
+		return super(FilesManager, self).get_queryset().filter(ticket=ticket)
+
+	def from_store(self, user):
+		return super(FilesManager, self).get_queryset().filter(store=user.profile.store.id)
+
 class Files(models.Model):
 	ticket = models.ForeignKey(Ticket, verbose_name="ticket")
+	store = models.ForeignKey(Stores, verbose_name="magasin", null=False, blank=False)
 	title = models.CharField("nom", max_length=50, default="")
 	name = models.CharField("fichier", max_length=50, default="")
 	size = models.IntegerField("taille", default=0)
@@ -131,11 +178,39 @@ class Files(models.Model):
 		verbose_name = "file"
 		verbose_name_plural = "files"
 
+	objects = FilesManager()
+
+class SharedData(models.Model):
+	CUSTOMER = 'CU'
+	SUPPLIER = 'SU'
+	STORE = 'ST'
+	CHOICES = (
+		(CUSTOMER, 'Client'),
+		(SUPPLIER, 'Fournisseur'),
+		(STORE, 'Magasin'),
+	)
+	category = models.CharField(max_length=2,
+		choices=CHOICES,
+		default=CUSTOMER)
+
+	content = models.TextField("description", default="")
+	short = models.CharField("code", max_length=3, blank=True, null=True)
+	available = models.BooleanField("actif", null=False, default=True)
+
+	def __str__(self):
+		return "%s (%s)" % (self.content, self.category)
+
 class SupplierHistory(models.Model):
 	ticket = models.ForeignKey(Ticket, verbose_name="ticket")
 
 class CustomerHistory(models.Model):
 	ticket = models.ForeignKey(Ticket, verbose_name="ticket")
+	store = models.ForeignKey(Stores, verbose_name="magasin", null=True, blank=True)
+	event = models.ForeignKey(SharedData, verbose_name="evennement", null=True, blank=True)
+	created = models.DateTimeField("ajouté le", auto_now_add=True)
+	updated = models.DateTimeField("modifié le", auto_now=True)
+	created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="utilisateur")
+	comment = models.ForeignKey(Comment, null=True, blank=True, verbose_name="commentaire")	
 
 class StoreHistory(models.Model):
 	ticket = models.ForeignKey(Ticket, verbose_name="ticket")

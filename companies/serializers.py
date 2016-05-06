@@ -4,7 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 
 from companies import models
-from companies.validators import FileValidator
+from bv.validators import FileValidator
 
 from locales.serializers import FrenchDepartmentsSerializer
 from locales.models import FRENCH_DEPARTMENTS, Countries
